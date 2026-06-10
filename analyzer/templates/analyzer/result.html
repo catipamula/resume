@@ -1,0 +1,379 @@
+{% extends 'analyzer/base.html' %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.rr {
+    max-width: 860px;
+    margin: 0 auto;
+    padding-bottom: 3rem;
+}
+
+/* ── Header ── */
+.rr-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.rr-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    color: #4ade80;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+.rr-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #f0f9ff;
+    margin-bottom: 6px;
+}
+.rr-header p { font-size: 14px; color: #64748b; }
+
+/* ── Metric Cards ── */
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+}
+.metric {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+}
+.metric-label {
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.metric-label i { font-size: 14px; }
+.metric-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+}
+.metric-sub { font-size: 12px; color: #64748b; margin-top: 4px; }
+.mv-green { color: #4ade80; }
+.mv-amber { color: #fbbf24; }
+.mv-blue  { color: #38bdf8; }
+.mv-red   { color: #f87171; }
+
+.ats-bar-wrap {
+    margin-top: 10px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.ats-bar {
+    height: 100%;
+    border-radius: 3px;
+    background: #f59e0b;
+}
+
+/* ── Section Cards ── */
+.card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+.card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #f0f9ff;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.card-title i { font-size: 18px; }
+.icon-green { color: #4ade80; }
+.icon-red   { color: #f87171; }
+.icon-blue  { color: #38bdf8; }
+.icon-amber { color: #fbbf24; }
+
+/* ── Suggestions ── */
+.suggestions { list-style: none; }
+.suggestions li {
+    font-size: 13px;
+    color: #cbd5e1;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.55;
+}
+.suggestions li:last-child { border-bottom: none; }
+.suggestions li::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #38bdf8;
+    flex-shrink: 0;
+    margin-top: 6px;
+}
+
+/* ── Missing Skills ── */
+.skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.skill-tag {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #fca5a5;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ── Skill Assessment ── */
+.assess-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.assess-row:last-child { border-bottom: none; }
+.assess-name {
+    font-size: 13px;
+    color: #e2e8f0;
+    font-weight: 500;
+    min-width: 140px;
+}
+.assess-bar-wrap {
+    flex: 1;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.assess-bar { height: 100%; border-radius: 3px; }
+.bar-green { background: #4ade80; }
+.bar-blue  { background: #38bdf8; }
+.bar-amber { background: #fbbf24; }
+.assess-score {
+    font-size: 12px;
+    color: #94a3b8;
+    min-width: 32px;
+    text-align: right;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+}
+.assess-level {
+    font-size: 11px;
+    color: #64748b;
+    min-width: 72px;
+    text-align: right;
+}
+
+/* ── Job Cards ── */
+.jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+.job-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    text-decoration: none;
+}
+.job-card:hover {
+    border-color: rgba(56, 189, 248, 0.4);
+    background: rgba(56, 189, 248, 0.04);
+    transform: translateY(-2px);
+}
+.job-co {
+    font-size: 11px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.job-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #f0f9ff;
+}
+.job-loc {
+    font-size: 12px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.job-apply {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #38bdf8;
+    text-decoration: none;
+}
+.job-apply:hover { text-decoration: underline; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .rr-header h1 { font-size: 22px; }
+    .card { padding: 1.1rem; }
+    .assess-name { min-width: 90px; font-size: 12px; }
+    .assess-level { display: none; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+
+<div class="rr">
+
+  <!-- Header -->
+  <div class="rr-header">
+    <div class="rr-badge">
+      <i class="ti ti-sparkles"></i> Analysis Complete
+    </div>
+    <h1>AI Resume Report</h1>
+    <p>Here's your personalized career breakdown based on your resume.</p>
+  </div>
+
+  <!-- Metric Summary -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">
+        <i class="ti ti-briefcase" style="color:#38bdf8"></i> Best Match
+      </div>
+      <div class="metric-value mv-blue" style="font-size:17px; margin-top:4px;">{{ job }}</div>
+      <div class="metric-sub">{{ confidence }}% confidence</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">
+        <i class="ti ti-robot" style="color:#fbbf24"></i> ATS Score
+      </div>
+      <div class="metric-value mv-amber">
+        {{ ats }}<span style="font-size:14px; color:#64748b;">/100</span>
+      </div>
+      <div class="ats-bar-wrap">
+        <div class="ats-bar" style="width:{{ ats }}%;"></div>
+      </div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">
+        <i class="ti ti-alert-triangle" style="color:#f87171"></i> Missing Skills
+      </div>
+      <div class="metric-value mv-red">{{ missing|length }}</div>
+      <div class="metric-sub">gaps identified</div>
+    </div>
+  </div>
+
+  <!-- AI Suggestions -->
+  <div class="card">
+    <div class="card-title">
+      <i class="ti ti-bulb icon-green"></i> AI Suggestions
+    </div>
+    <ul class="suggestions">
+      {% for s in suggestions %}
+      <li>{{ s }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Missing Skills -->
+  <div class="card">
+    <div class="card-title">
+      <i class="ti ti-alert-circle icon-red"></i> Missing Skills
+    </div>
+    <div class="skill-tags">
+      {% for s in missing %}
+      <span class="skill-tag">
+        <i class="ti ti-plus"></i>{{ s }}
+      </span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Skill Assessment -->
+  <div class="card">
+    <div class="card-title">
+      <i class="ti ti-chart-bar icon-blue"></i> Skill Assessment
+    </div>
+    {% for skill, data in assessment.items %}
+    <div class="assess-row">
+      <span class="assess-name">{{ skill }}</span>
+      <div class="assess-bar-wrap">
+        <div class="assess-bar {% if data.score >= 80 %}bar-green{% elif data.score >= 50 %}bar-blue{% else %}bar-amber{% endif %}"
+             style="width:{{ data.score }}%;"></div>
+      </div>
+      <span class="assess-score">{{ data.score }}</span>
+      <span class="assess-level">{{ data.level }}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Recommended Jobs -->
+  <div class="card">
+    <div class="card-title">
+      <i class="ti ti-map-pin icon-amber"></i> Recommended Jobs
+    </div>
+    <div class="jobs-grid">
+      {% for job in jobs %}
+      <div class="job-card">
+        <div class="job-co">
+          <i class="ti ti-building" style="font-size:13px;"></i>{{ job.company }}
+        </div>
+        <div class="job-title">{{ job.title }}</div>
+        <div class="job-loc">
+          <i class="ti ti-map-pin" style="font-size:13px;"></i>{{ job.location }}
+        </div>
+        <a class="job-apply" href="{{ job.link }}" target="_blank">
+          Apply Now <i class="ti ti-external-link" style="font-size:13px;"></i>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
